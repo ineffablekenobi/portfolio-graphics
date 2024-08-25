@@ -139,7 +139,7 @@ export default class MonitorScreen extends EventEmitter {
         container.style.width = this.screenSize.width + 'px';
         container.style.height = this.screenSize.height + 'px';
         container.style.opacity = '1';
-        container.style.background = '#1d2e2f';
+        container.style.background = 'white';
 
         // Create iframe
         const iframe = document.createElement('iframe');
@@ -184,7 +184,7 @@ export default class MonitorScreen extends EventEmitter {
 
         // Set iframe attributes
         // PROD
-        iframe.src = 'https://os.henryheffernan.com/';
+        iframe.src = 'https://nirajprakash.github.io/';
         /**
          * Use dev server is query params are present
          *
@@ -201,7 +201,7 @@ export default class MonitorScreen extends EventEmitter {
         iframe.style.padding = IFRAME_PADDING + 'px';
         iframe.style.boxSizing = 'border-box';
         iframe.style.opacity = '1';
-        iframe.className = 'jitter';
+        //iframe.className = 'jitter';
         iframe.id = 'computer-screen';
         iframe.frameBorder = '0';
         iframe.title = 'HeffernanOS';
@@ -254,64 +254,73 @@ export default class MonitorScreen extends EventEmitter {
         this.scene.add(mesh);
     }
 
-    /**
-     * Creates the texture layers for the computer screen
-     * @returns the maximum offset of the texture layers
-     */
     createTextureLayers() {
         const textures = this.resources.items.texture;
-
+    
         this.getVideoTextures('video-1');
         this.getVideoTextures('video-2');
-
-        // Scale factor to multiply depth offset by
+    
         const scaleFactor = 4;
-
+    
         // Construct the texture layers
         const layers = {
+            content: {
+                texture: textures.monitorContentTexture,
+                blending: THREE.NormalBlending,
+                opacity: 1,
+                offset: 0,
+            },
+            colorEnhance: {
+                texture: textures.monitorColorEnhanceTexture,
+                blending: THREE.CustomBlending,
+                blendEquation: THREE.AddEquation,
+                blendSrc: THREE.SrcAlphaFactor,
+                blendDst: THREE.OneMinusSrcAlphaFactor,
+                opacity: 0.3,
+                offset: 1,
+            },
             smudge: {
                 texture: textures.monitorSmudgeTexture,
                 blending: THREE.AdditiveBlending,
-                opacity: 0.12,
+                opacity: 0.05,
                 offset: 24,
             },
             innerShadow: {
                 texture: textures.monitorShadowTexture,
-                blending: THREE.NormalBlending,
-                opacity: 1,
+                blending: THREE.MultiplyBlending,
+                opacity: 0.7,
                 offset: 5,
             },
             video: {
                 texture: this.videoTextures['video-1'],
                 blending: THREE.AdditiveBlending,
-                opacity: 0.5,
+                opacity: 0.3,
                 offset: 10,
             },
             video2: {
                 texture: this.videoTextures['video-2'],
                 blending: THREE.AdditiveBlending,
-                opacity: 0.1,
+                opacity: 0.05,
                 offset: 15,
             },
         };
-
-        // Declare max offset
+    
         let maxOffset = -1;
-
-        // Add the texture layers to the screen
+    
         for (const [_, layer] of Object.entries(layers)) {
             const offset = layer.offset * scaleFactor;
             this.addTextureLayer(
                 layer.texture,
                 layer.blending,
                 layer.opacity,
-                offset
+                offset,
+                (layer as any).blendEquation as THREE.BlendingEquation | undefined,
+                (layer as any).blendSrc as THREE.BlendingSrcFactor | undefined,
+                (layer as any).blendDst as THREE.BlendingDstFactor | undefined
             );
-            // Calculate the max offset
             if (offset > maxOffset) maxOffset = offset;
         }
-
-        // Return the max offset
+    
         return maxOffset;
     }
 
@@ -339,7 +348,10 @@ export default class MonitorScreen extends EventEmitter {
         texture: THREE.Texture,
         blendingMode: THREE.Blending,
         opacity: number,
-        offset: number
+        offset: number,
+        blendEquation?: THREE.BlendingEquation,
+        blendSrc?: THREE.BlendingSrcFactor,
+        blendDst?: THREE.BlendingDstFactor
     ) {
         // Create material
         const material = new THREE.MeshBasicMaterial({
@@ -349,24 +361,30 @@ export default class MonitorScreen extends EventEmitter {
             opacity,
             transparent: true,
         });
-
+    
+        if (blendingMode === THREE.CustomBlending && blendEquation && blendSrc && blendDst) {
+            material.blendEquation = blendEquation;
+            material.blendSrc = blendSrc;
+            material.blendDst = blendDst;
+        }
+    
         // Create geometry
         const geometry = new THREE.PlaneGeometry(
             this.screenSize.width,
             this.screenSize.height
         );
-
+    
         // Create mesh
         const mesh = new THREE.Mesh(geometry, material);
-
+    
         // Copy position and apply the depth offset
         mesh.position.copy(
             this.offsetPosition(this.position, new THREE.Vector3(0, 0, offset))
         );
-
+    
         // Copy rotation
         mesh.rotation.copy(this.rotation);
-
+    
         this.scene.add(mesh);
     }
 
@@ -457,7 +475,7 @@ export default class MonitorScreen extends EventEmitter {
             side: THREE.DoubleSide,
             color: 0x000000,
             transparent: true,
-            blending: THREE.AdditiveBlending,
+            blending: THREE.MultiplyBlending, // Changed from AdditiveBlending
         });
 
         const plane = new THREE.PlaneGeometry(
@@ -514,9 +532,9 @@ export default class MonitorScreen extends EventEmitter {
                     (camPos.z - dimPos.z) ** 2
             );
 
-            const opacity = 1 / (distance / 10000);
+            const opacity = 1 / (distance / 20000); // Increased from 10000
 
-            const DIM_FACTOR = 0.7;
+            const DIM_FACTOR = 0.3; // Reduced from 0.7
 
             // @ts-ignore
             this.dimmingPlane.material.opacity =

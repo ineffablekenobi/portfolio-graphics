@@ -2,7 +2,7 @@
 
 **Software Engineer | Researcher | Full-Stack Developer**
 
-Crafting innovative software solutions at Enosis Solution. Specializing in architecting scalable systems, optimizing performance, and leveraging design patterns for robust, maintainable code. Proficient in Java, Python, JavaScript, TypeScript, and agile methodologies.
+Crafting innovative software solutions at [Enosis Solution](https://www.enosisbd.com/). Specializing in architecting scalable systems, optimizing performance, and leveraging design patterns for robust, maintainable code. Proficient in Java, Python, JavaScript, TypeScript, and agile methodologies.
 
 ### Key Skills
 

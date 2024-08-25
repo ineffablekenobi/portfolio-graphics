@@ -1,29 +1,19 @@
-# henryheffernan.com
+## TLDR of this project
 
-This is one of two repositories created for my portfolio website <a href="https://henryheffernan.com/"><samp>henryheffernan.com</samp></a>. If you are looking for the 2D OS repository you can find it <a href="https://github.com/henryjeff/portfolio-inner-site"><samp>here</samp></a>! Thanks for taking the time to check this out. If you have any questions of comments, feel free to shoot me an email at <samp><a href="mailto:henryheffernan@gmail.com">henryheffernan@gmail.com</a></samp> or you can DM me on twitter <a href="https://twitter.com/henryheffernan"><samp>@henryheffernan</samp></a>.
+**Software Engineer | Researcher | Full-Stack Developer**
 
-<br>
+Crafting innovative software solutions at Enosis Solution. Specializing in architecting scalable systems, optimizing performance, and leveraging design patterns for robust, maintainable code. Proficient in Java, Python, JavaScript, TypeScript, and agile methodologies.
 
-To setup a dev environment:
+### Key Skills
 
-```bash
-# Clone the repository
+-   **Design Patterns:** SOLID principles, creational, structural, and behavioral patterns
+-   **Architecture:** Microservices, event-driven systems
+-   **Technologies:** Spring Boot, Angular, SQL/NoSQL, S3
+-   **Languages:** Java, JavaScript, TypeScript, Python
 
-# Install dependencies 
-npm i
+### Connect with me
 
-# Run the local dev server
-npm run dev
-```
-
-To serve a production build:
-
-```bash
-# Install dependencies if not already done - 'npi i'
-
-# Build for production
-npm run build
-
-# Serve the build using express
-npm start
-```
+-   [LinkedIn](https://bd.linkedin.com/in/swapnil-sharma-sarker-36357a17b)
+-   [Google Scholar](https://scholar.google.co.in/citations?user=4Zr_spQAAAAJ&hl=en)
+-   [GitHub](https://github.com/geffenlab/contrast_behavior)
+-   [Codeforces](https://codeforces.com/profile/ineffablekenobi)
